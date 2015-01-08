@@ -1,16 +1,26 @@
 # -*- coding: utf-8 -*-
 
+# Universal method for setting wxversion
+FORCEWXVERSION=False
+def setWXVersion():
+    import wxversion
+    if (FORCEWXVERSION):
+        vforced = '2.8'
+        wxversion.select(vforced)
+    else:
+        wxversion.select(['3.0', '2.8'])
+
+setWXVersion()
+
 import sys, os
 from urllib2 import urlopen, URLError, HTTPError
 from wx.lib.docview import PathOnly
-
-
-import wxversion
-wxversion.select(['2.6', '2.7', '2.8'])
 import wx
 
 import language
 
+# Get path to folder where application resides
+application_path = os.path.dirname(__file__)
 
 # Set the encoding to unicode
 if (sys.getdefaultencoding() != 'utf-8'):
@@ -80,7 +90,7 @@ def GetCurrentVersion():
         version = (version[0], version[1], version[2])
         return version
     
-    except URLError, err:
+    except URLError as err:
         #err = unicode(err)
         return err
 
@@ -101,13 +111,13 @@ def CommandExists(command):
     try:
         subprocess.Popen(command.split(u' ')[0].split(u' '))
         exists = True
-        print u'First subprocess: %s' % (exists)
+        print(u'First subprocess: %s' % (exists))
     except OSError:
         exists = os.path.isfile(command)
-        print u'os.path: %s' % (exists)
+        print(u'os.path: %s' % (exists))
         if exists:
             subprocess.Popen((command))
-            print u'Second subprocess: %s' % (exists)
+            print(u'Second subprocess: %s' % (exists))
     return exists
 
 
